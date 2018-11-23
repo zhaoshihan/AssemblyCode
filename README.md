@@ -8,9 +8,9 @@
     
     `mount d d:\tasm`
 
-     	`d:`
+     `d:`
 
-	`cd bin`
+     `cd bin`
 
 	`tasm [yourfile].asm`
 
