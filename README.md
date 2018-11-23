@@ -6,7 +6,7 @@
 1. 将tasm文件夹放在D盘根目录下
 2. 打开DosBox，运行：
     
-    	`mount d d:\tasm`
+    `mount d d:\tasm`
 
      	`d:`
 
