@@ -1,0 +1,66 @@
+Turbo Assembler	 Version 4.1	    11/19/18 19:53:59	    Page 1
+hello.asm
+
+
+
+      1	0000			     .MODEL small
+      2	0000				.STACK 100h
+      3	0000				.DATA
+      4	0000  48 65 6C 6C 6F 2C	20+  HelloMessage DB 'Hello, world',13,10,'$'
+      5	      77 6F 72 6C 64 0D	0A+
+      6	      24
+      7	000F				.CODE
+      8					.startup
+1     9	0000			     @Startup:
+1    10	0000  BA 0000s			     MOV     DX,@data
+1    11	0003  8E DA			     MOV     DS,DX
+1    12	0005  8C D3			     MOV     BX,SS
+1    13	0007  2B DA			     SUB     BX,DX
+1    14	0009  D1 E3 D1 E3 D1 E3	D1+	     SHL     BX,4
+     15	      E3
+1    16	0011  FA			     CLI
+1    17	0012  8E D2			     MOV     SS,DX
+1    18	0014  03 E3			     ADD     SP,BX
+1    19	0016  FB			     STI
+     20	0017  B8 0000s			mov  ax,@data
+     21	001A  8E D8			mov  ds,ax		    ;set DS to point to	the data segment
+     22	001C  B4 09			mov  ah,9		    ;DOS print string function
+     23	001E  BA 0000r			mov  dx,OFFSET HelloMessage ;point to "Hello, world"
+     24	0021  CD 21			int  21h		    ;display "Hello, world"
+     25	0023  B4 4C			mov  ah,4ch		    ;DOS terminate program function
+     26	0025  CD 21			int  21h		    ;terminate the program
+     27					END
+Turbo Assembler	 Version 4.1	    11/19/18 19:53:59	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "11/19/18"
+??FILENAME			  Text	 "hello	  "
+??TIME				  Text	 "19:53:59"
+??VERSION			  Number 040A
+@32BIT				  Text	 0
+@CODE				  Text	 _TEXT
+@CODESIZE			  Text	 0
+@CPU				  Text	 0101H
+@CURSEG				  Text	 _TEXT
+@DATA				  Text	 DGROUP
+@DATASIZE			  Text	 0
+@FILENAME			  Text	 HELLO
+@INTERFACE			  Text	 000H
+@MODEL				  Text	 2
+@STACK				  Text	 DGROUP
+@STARTUP			  Near	 _TEXT:0000
+@WORDSIZE			  Text	 2
+HELLOMESSAGE			  Byte	 DGROUP:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+DGROUP				  Group
+  STACK				  16  0100 Para	  Stack	  STACK
+  _DATA				  16  000F Word	  Public  DATA
+_TEXT				  16  0027 Word	  Public  CODE
+

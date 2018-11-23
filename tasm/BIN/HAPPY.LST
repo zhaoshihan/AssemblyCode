@@ -1,0 +1,36 @@
+Turbo Assembler	 Version 4.1	    11/19/18 19:59:24	    Page 1
+happy.asm
+
+
+
+      1	0000			     PROG1   SEGMENT
+      2					     ASSUME CS:PROG1
+      3	0000  B2 01		     START:  mov DL,1
+      4	0002  B4 02			     mov AH,2
+      5	0004  CD 21			     int 21H
+      6	0006  B8 4C00			     mov AX,4C00H
+      7	0009  CD 21			     int 21H
+      8	000B			     PROG1   ENDS
+      9				     END     START
+Turbo Assembler	 Version 4.1	    11/19/18 19:59:24	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "11/19/18"
+??FILENAME			  Text	 "happy	  "
+??TIME				  Text	 "19:59:24"
+??VERSION			  Number 040A
+@CPU				  Text	 0101H
+@CURSEG				  Text	 PROG1
+@FILENAME			  Text	 HAPPY
+@WORDSIZE			  Text	 2
+START				  Near	 PROG1:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+PROG1				  16  000B Para	  none
+

@@ -1,0 +1,164 @@
+Turbo Assembler	 Version 4.1	    11/20/18 23:18:48	    Page 1
+fibo.asm
+
+
+
+      1	0000			     DATA    SEGMENT
+      2	      =0001		     COUNT   EQU     1
+      3	0000  03*(00)		     FIRST   DB	     3 DUP(0)
+      4	0003  03*(00)		     SECOND  DB	     3 DUP(0)
+      5	0006			     DATA    ENDS
+      6
+      7	0000			     CODE    SEGMENT
+      8				     ASSUME  CS:CODE,DS:DATA
+      9	0000  B8 0000s		     START:  MOV AX,DATA
+     10	0003  8E D8			     MOV DS,AX
+     11	0005  B7 00			     MOV BH,0
+     12
+     13	0007  FE C7		     AGAIN:  INC BH
+     14	0009  BE 0000r			     MOV SI,OFFSET FIRST
+     15	000C  BF 0003r			     MOV DI,OFFSET SECOND
+     16	000F  8A 04			     MOV AL,[SI]
+     17	0011  8B 15			     MOV DX,[DI]     ;CHANGE FIRST
+     18	0013  89 14			     MOV [SI],DX
+     19	0015  02 05			     ADD AL,[DI]
+     20	0017  2A DB			     SUB BL,BL	     ;BL记录进位
+     21	0019  73 02			     JNC NEXT2
+     22	001B  FE C3			     INC BL
+     23
+     24	001D  88 05		     NEXT2:  MOV [DI],AL     ;CHANGE SECOND
+     25	001F  46			     INC SI
+     26	0020  47			     INC DI
+     27	0021  8A E3			     MOV AH,BL
+     28	0023  2A DB			     SUB BL,BL	     ;BL记录进位
+     29	0025  02 24			     ADD AH,[SI]
+     30	0027  73 02			     JNC NEXT3
+     31	0029  FE C3			     INC BL
+     32
+     33	002B  8B 15		     NEXT3:  MOV DX,[DI]     ;CHANGE FIRST
+     34	002D  89 14			     MOV [SI],DX
+     35	002F  02 25			     ADD AH,[DI]
+     36	0031  73 02			     JNC NEXT4
+     37	0033  FE C3			     INC BL
+     38
+     39	0035  88 25		     NEXT4:  MOV [DI],AH     ;CHANGE SECOND
+     40	0037  46			     INC SI
+     41	0038  47			     INC DI
+     42	0039  8A D3			     MOV DL,BL
+     43	003B  02 14			     ADD DL,[SI]
+     44	003D  8B 15			     MOV DX,[DI]     ;CHANGE FIRST
+     45	003F  89 14			     MOV [SI],DX
+     46	0041  02 15			     ADD DL,[DI]
+     47	0043  88 15			     MOV [DI],DL     ;CHANGE SECOND
+     48					     ;SUB DH,DH	     ;DH=0
+     49					     ;CALL PRINT
+     50
+     51	0045  80 FF 01			     CMP BH,COUNT
+     52	0048  72 BD			     JB	AGAIN	     ; BH<30,CONTINUE
+     53	004A  2A F6			     SUB DH,DH
+     54	004C  E8 0000			     CALL PRINT
+     55
+     56	004F			     PRINT   PROC NEAR
+     57	004F  B9 2710			     MOV CX, 10000
+Turbo Assembler	 Version 4.1	    11/20/18 23:18:48	    Page 2
+fibo.asm
+
+
+
+     58	0052  F7 F1			     DIV CX	     ;AX=商，DX=余数
+     59	0054  8B CA			     MOV CX,DX	     ;STORE REMAIN IN CX
+     60
+     61	0056  B4 00			     MOV AH,0	     ;商最大为83，在AL中
+     62	0058  B2 0A			     MOV DL,10
+     63	005A  F6 F2			     DIV DL
+     64	005C  86 E0			     XCHG AH,AL
+     65	005E  05 3030			     ADD AX,3030H
+     66	0061  8A D4			     MOV DL,AH
+     67	0063  B4 02			     MOV AH,2
+     68	0065  CD 21			     INT 21H
+     69	0067  8A D0			     MOV DL,AL
+     70	0069  B4 02			     MOV AH,2
+     71	006B  CD 21			     INT 21H
+     72
+     73	006D  8B C1			     MOV AX,CX	     ;0-9999
+     74	006F  2B D2			     SUB DX,DX
+     75	0071  B9 03E8			     MOV CX,1000
+     76	0074  F7 F1			     DIV CX	     ;AX=商，DX=余数
+     77	0076  8B CA			     MOV CX,DX	     ;CX保存余数
+     78
+     79	0078  04 30			     ADD AL,30H
+     80	007A  8A D4			     MOV DL,AH
+     81	007C  B4 02			     MOV AH,2
+     82	007E  CD 21			     INT 21H
+     83
+     84	0080  8B C1			     MOV AX,CX	     ;0-999
+     85	0082  B1 64			     MOV CL,100
+     86	0084  F6 F1			     DIV CL	     ;AL=商,AH=余数
+     87	0086  8A CC			     MOV CL,AH	     ;CL保存余数
+     88
+     89	0088  04 30			     ADD AL,30H
+     90	008A  8A D4			     MOV DL,AH
+     91	008C  B4 02			     MOV AH,2
+     92	008E  CD 21			     INT 21H
+     93
+     94	0090  8A C1			     MOV AL,CL	     ;0-99
+     95	0092  B4 00			     MOV AH,0	     ;尾数在AL中
+     96	0094  B2 0A			     MOV DL,10
+     97	0096  F6 F2			     DIV DL
+     98	0098  86 E0			     XCHG AH,AL
+     99	009A  05 3030			     ADD AX,3030H
+    100	009D  8A D4			     MOV DL,AH
+    101	009F  B4 02			     MOV AH,2
+    102	00A1  CD 21			     INT 21H
+    103	00A3  8A D0			     MOV DL,AL
+    104	00A5  B4 02			     MOV AH,2
+    105	00A7  CD 21			     INT 21H
+    106
+    107	00A9  B2 20			     MOV DL, 32
+    108	00AB  B4 02			     MOV AH,2
+    109	00AD  CD 21			     INT 21H
+    110	00AF  C3		     EXIT:   RET
+    111	00B0			     PRINT   ENDP
+    112
+    113
+    114	00B0  B8 4C00			     MOV AX,4C00H
+Turbo Assembler	 Version 4.1	    11/20/18 23:18:48	    Page 3
+fibo.asm
+
+
+
+    115	00B3  CD 21			     INT 21H
+    116	00B5			     CODE    ENDS
+    117				     END     START
+Turbo Assembler	 Version 4.1	    11/20/18 23:18:48	    Page 4
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "11/20/18"
+??FILENAME			  Text	 "fibo	  "
+??TIME				  Text	 "23:18:48"
+??VERSION			  Number 040A
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE
+@FILENAME			  Text	 FIBO
+@WORDSIZE			  Text	 2
+AGAIN				  Near	 CODE:0007
+COUNT				  Number 0001
+EXIT				  Near	 CODE:00AF
+FIRST				  Byte	 DATA:0000
+NEXT2				  Near	 CODE:001D
+NEXT3				  Near	 CODE:002B
+NEXT4				  Near	 CODE:0035
+PRINT				  Near	 CODE:004F
+SECOND				  Byte	 DATA:0003
+START				  Near	 CODE:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE				  16  00B5 Para	  none
+DATA				  16  0006 Para	  none
+
