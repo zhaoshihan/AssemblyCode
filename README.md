@@ -6,19 +6,19 @@
 1. 将tasm文件夹放在D盘根目录下
 2. 打开DosBox，运行：
     
-    `mount d d:\tasm
+    	`mount d d:\tasm`
 
-	d:
+     	`d:`
 
-	cd bin
+	`cd bin`
 
-	tasm [yourfile].asm
+	`tasm [yourfile].asm`
 
-	tlink [yourfile].obj io.obj
+	`tlink [yourfile].obj io.obj`
 
-	直接运行：[yourfile].exe
+	`直接运行：[yourfile].exe`
 
-	调试运行：debug [yourfile].exe`
+	`调试运行：debug [yourfile].exe`
 
 3. 这里需要说明的是文件名最好是英文小写，且字数不要太长，否则会有莫名其妙的错误
 
